@@ -6264,6 +6264,7 @@ final class MenuBarExtraController: NSObject, NSMenuDelegate {
     private let onOpenPreferences: () -> Void
     private let onQuitApp: () -> Void
     private var notificationsCancellable: AnyCancellable?
+    private var defaultsObserver: NSObjectProtocol?
     private let buildHintTitle: String?
 
     private let stateHintItem = NSMenuItem(title: "No unread notifications", action: nil, keyEquivalent: "")
@@ -6315,6 +6316,14 @@ final class MenuBarExtraController: NSObject, NSMenuDelegate {
             .sink { [weak self] _ in
                 self?.refreshUI()
             }
+
+        defaultsObserver = NotificationCenter.default.addObserver(
+            forName: UserDefaults.didChangeNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            self?.refreshUI()
+        }
 
         refreshUI()
     }
@@ -6401,8 +6410,9 @@ final class MenuBarExtraController: NSObject, NSMenuDelegate {
 
         rebuildInlineNotificationItems(recentNotifications: snapshot.recentNotifications)
 
+        let badgeCount = NotificationBadgeSettings.isMenuBarBadgeEnabled() ? displayedUnreadCount : 0
         if let button = statusItem.button {
-            button.image = MenuBarIconRenderer.makeImage(unreadCount: displayedUnreadCount)
+            button.image = MenuBarIconRenderer.makeImage(unreadCount: badgeCount)
             button.toolTip = displayedUnreadCount == 0
                 ? "cmux"
                 : "cmux: \(displayedUnreadCount) unread notification\(displayedUnreadCount == 1 ? "" : "s")"

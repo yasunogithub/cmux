@@ -6,11 +6,21 @@ enum NotificationBadgeSettings {
     static let dockBadgeEnabledKey = "notificationDockBadgeEnabled"
     static let defaultDockBadgeEnabled = true
 
+    static let menuBarBadgeEnabledKey = "notificationMenuBarBadgeEnabled"
+    static let defaultMenuBarBadgeEnabled = true
+
     static func isDockBadgeEnabled(defaults: UserDefaults = .standard) -> Bool {
         if defaults.object(forKey: dockBadgeEnabledKey) == nil {
             return defaultDockBadgeEnabled
         }
         return defaults.bool(forKey: dockBadgeEnabledKey)
+    }
+
+    static func isMenuBarBadgeEnabled(defaults: UserDefaults = .standard) -> Bool {
+        if defaults.object(forKey: menuBarBadgeEnabledKey) == nil {
+            return defaultMenuBarBadgeEnabled
+        }
+        return defaults.bool(forKey: menuBarBadgeEnabledKey)
     }
 }
 

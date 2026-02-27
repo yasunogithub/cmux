@@ -2651,6 +2651,7 @@ struct SettingsView: View {
     @AppStorage(BrowserLinkOpenSettings.browserHostWhitelistKey) private var browserHostWhitelist = BrowserLinkOpenSettings.defaultBrowserHostWhitelist
     @AppStorage(BrowserInsecureHTTPSettings.allowlistKey) private var browserInsecureHTTPAllowlist = BrowserInsecureHTTPSettings.defaultAllowlistText
     @AppStorage(NotificationBadgeSettings.dockBadgeEnabledKey) private var notificationDockBadgeEnabled = NotificationBadgeSettings.defaultDockBadgeEnabled
+    @AppStorage(NotificationBadgeSettings.menuBarBadgeEnabledKey) private var notificationMenuBarBadgeEnabled = NotificationBadgeSettings.defaultMenuBarBadgeEnabled
     @AppStorage(QuitWarningSettings.warnBeforeQuitKey) private var warnBeforeQuitShortcut = QuitWarningSettings.defaultWarnBeforeQuit
     @AppStorage(CommandPaletteRenameSelectionSettings.selectAllOnFocusKey)
     private var commandPaletteRenameSelectAllOnFocus = CommandPaletteRenameSelectionSettings.defaultSelectAllOnFocus
@@ -2840,6 +2841,17 @@ struct SettingsView: View {
                             subtitle: "Show unread count on app icon (Dock and Cmd+Tab)."
                         ) {
                             Toggle("", isOn: $notificationDockBadgeEnabled)
+                                .labelsHidden()
+                                .controlSize(.small)
+                        }
+
+                        SettingsCardDivider()
+
+                        SettingsCardRow(
+                            "Menu Bar Badge",
+                            subtitle: "Show unread count on the menu bar icon."
+                        ) {
+                            Toggle("", isOn: $notificationMenuBarBadgeEnabled)
                                 .labelsHidden()
                                 .controlSize(.small)
                         }
@@ -3512,6 +3524,7 @@ struct SettingsView: View {
         browserInsecureHTTPAllowlist = BrowserInsecureHTTPSettings.defaultAllowlistText
         browserInsecureHTTPAllowlistDraft = BrowserInsecureHTTPSettings.defaultAllowlistText
         notificationDockBadgeEnabled = NotificationBadgeSettings.defaultDockBadgeEnabled
+        notificationMenuBarBadgeEnabled = NotificationBadgeSettings.defaultMenuBarBadgeEnabled
         warnBeforeQuitShortcut = QuitWarningSettings.defaultWarnBeforeQuit
         commandPaletteRenameSelectAllOnFocus = CommandPaletteRenameSelectionSettings.defaultSelectAllOnFocus
         newWorkspacePlacement = WorkspacePlacementSettings.defaultPlacement.rawValue
